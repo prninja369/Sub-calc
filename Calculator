@@ -1,0 +1,72 @@
+import React, { useState } from "react";
+
+export default function SubscriptionProfitCalculator() {
+  const [subscriptions, setSubscriptions] = useState([
+    { service: "Netflix", cost: 649, slots: 5, pricePerSlot: 200 },
+    { service: "Canva Pro", cost: 499, slots: 5, pricePerSlot: 250 },
+    { service: "Grammarly", cost: 360, slots: 5, pricePerSlot: 200 },
+    { service: "Spotify", cost: 149, slots: 4, pricePerSlot: 75 },
+    { service: "Hotstar", cost: 299, slots: 4, pricePerSlot: 100 }
+  ]);
+
+  const handleChange = (index, field, value) => {
+    const updated = [...subscriptions];
+    updated[index][field] = parseFloat(value);
+    setSubscriptions(updated);
+  };
+
+  return (
+    <div className="p-4 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Subscription Profit Calculator</h1>
+      <table className="w-full border">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="p-2 border">Service</th>
+            <th className="p-2 border">Monthly Cost (₹)</th>
+            <th className="p-2 border">Slots</th>
+            <th className="p-2 border">Your Price/Slot (₹)</th>
+            <th className="p-2 border">Revenue (₹)</th>
+            <th className="p-2 border">Profit (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subscriptions.map((sub, index) => {
+            const revenue = sub.pricePerSlot * sub.slots;
+            const profit = revenue - sub.cost;
+            return (
+              <tr key={index} className="text-center">
+                <td className="p-2 border">{sub.service}</td>
+                <td className="p-2 border">
+                  <input
+                    type="number"
+                    value={sub.cost}
+                    onChange={(e) => handleChange(index, "cost", e.target.value)}
+                    className="w-20 text-center border rounded"
+                  />
+                </td>
+                <td className="p-2 border">
+                  <input
+                    type="number"
+                    value={sub.slots}
+                    onChange={(e) => handleChange(index, "slots", e.target.value)}
+                    className="w-16 text-center border rounded"
+                  />
+                </td>
+                <td className="p-2 border">
+                  <input
+                    type="number"
+                    value={sub.pricePerSlot}
+                    onChange={(e) => handleChange(index, "pricePerSlot", e.target.value)}
+                    className="w-20 text-center border rounded"
+                  />
+                </td>
+                <td className="p-2 border">₹{revenue}</td>
+                <td className="p-2 border font-semibold">₹{profit}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
